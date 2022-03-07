@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/data/models/post_model.dart';
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/domain/entities/post.dart';
+import '../models/post_model.dart';
+import '../../domain/entities/post.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
@@ -21,10 +21,12 @@ class PostsCrudRepositoryImpl implements PostsCrudRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, List<Post>>> getAllPosts() async {
+  Future<Either<Failure, List<Post>>> getAllPosts(
+      {required int start, required int limit}) async {
     if (await networkInfo.isConnected) {
       try {
-        final remotePosts = await remoteDataSource.getAllPosts();
+        final remotePosts =
+            await remoteDataSource.getAllPosts(start: start, limit: limit);
         List<PostModel> postsModel = [];
         if (remotePosts.length > 20) {
           postsModel = _convertPostToPostModel(20, remotePosts);

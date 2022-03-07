@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
-
-import '../../../domain/entities/post.dart';
+import '../loading_widget.dart';
+import '../../bloc/post_bloc.dart';
 import '../../pages/post_detail_page.dart';
 
 class PostList extends StatelessWidget {
-  final List<Post> posts;
+  final LoadedPostsState state;
+  final ScrollController scrollController;
   const PostList({
     Key? key,
-    required this.posts,
+    required this.scrollController,
+    required this.state,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: posts.length,
+      itemCount:
+          state.hasReachedMax ? state.posts.length : state.posts.length + 1,
+      controller: scrollController,
       itemBuilder: (context, index) {
+        if (index >= state.posts.length) return LoadingWidget();
         return ListTile(
-          leading: Text(posts[index].id.toString()),
+          leading: Text(state.posts[index].id.toString()),
           title: Text(
-            posts[index].title,
+            state.posts[index].title,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
-            posts[index].body,
+            state.posts[index].body,
             style: TextStyle(
               fontSize: 16,
             ),
@@ -36,7 +41,7 @@ class PostList extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => PostDetailPage(post: posts[index]),
+                builder: (_) => PostDetailPage(post: state.posts[index]),
               ),
             );
           },

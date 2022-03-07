@@ -26,7 +26,8 @@ Future<void> init() async {
         deletePost: sl(),
         getAllPosts: sl(),
         getPostDetail: sl(),
-        updatePost: sl()),
+        updatePost: sl(),
+        networkInfo: sl()),
   );
 
   // Use cases

@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/data/models/post_model.dart';
+import '../models/post_model.dart';
 import '../../../../core/error/exception.dart';
 import '../../domain/entities/post.dart';
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 abstract class PostCrudRemoteDataSource {
-  Future<List<Post>> getAllPosts();
+  Future<List<Post>> getAllPosts({required int start, required int limit});
   Future<Post> getPostDetail(int id);
   Future<bool> deletePost(int id);
   Future<bool> updatePost(Post post);
@@ -20,9 +20,10 @@ class PostCrudRemoteDataSourceImpl implements PostCrudRemoteDataSource {
   PostCrudRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<Post>> getAllPosts() async {
+  Future<List<Post>> getAllPosts(
+      {required int start, required int limit}) async {
     final response = await client.get(
-      Uri.parse(BASE_URL + "/posts/"),
+      Uri.parse(BASE_URL + "/posts/?_start=$start&_limit=$limit"),
       headers: {
         'Content-Type': 'application/json',
       },

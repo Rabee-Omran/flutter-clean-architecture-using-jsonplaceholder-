@@ -1,7 +1,9 @@
 import 'dart:convert';
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/data/models/post_model.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/error/exception.dart';
+import '../models/post_model.dart';
 
 abstract class PostCrudLocalDataSource {
   Future<List<PostModel>> getLast20Posts();

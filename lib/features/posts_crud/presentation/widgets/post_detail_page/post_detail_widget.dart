@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/presentation/pages/post_edit_page.dart';
-import 'package:jsonplaceholder_clean_architecture/features/posts_crud/presentation/pages/posts_page.dart';
-import '../../../../../injection_container.dart';
-import '../../bloc/post_bloc.dart';
+
 import '../../../../../core/util/snackbar_message.dart';
+import '../../../../../injection_container.dart';
 import '../../../domain/entities/post.dart';
+import '../../bloc/post_bloc.dart';
+import '../../pages/post_edit_page.dart';
+import '../../pages/posts_page.dart';
 import '../loading_widget.dart';
 import '../message_display.dart';
 import 'delete_dialog_widget.dart';

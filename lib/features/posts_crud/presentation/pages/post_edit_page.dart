@@ -50,7 +50,8 @@ class _PostEditPageState extends State<PostEditPage> {
             if (state is MessageState) {
               SnackBarMessage().showSuccessSnackBar(
                   context: context, message: state.message);
-              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (ctx) => PostEditPage(post: widget.post)));
             }
           },
           child: BlocBuilder<PostBloc, PostState>(

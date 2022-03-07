@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../injection_container.dart';
 import '../widgets/post_detail_page/post_detail_widget.dart';
 import '../../domain/entities/post.dart';
 import '../bloc/post_bloc.dart';
@@ -17,12 +18,6 @@ class PostDetailPage extends StatefulWidget {
 
 class _PostDetailPageState extends State<PostDetailPage> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    BlocProvider.of<PostBloc>(context).add(GetPostDetailEvent(widget.post.id));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -32,24 +27,27 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   Widget buildBody(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            if (state is LoadingState) {
+    return BlocProvider<PostBloc>(
+      create: (_) => sl<PostBloc>()..add(GetPostDetailEvent(widget.post.id)),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: BlocBuilder<PostBloc, PostState>(
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return LoadingWidget();
+              } else if (state is LoadedPostDetailState) {
+                return PostDetailWidget(
+                  post: state.post,
+                );
+              } else if (state is ErrorState) {
+                return MessageDisplay(
+                  message: state.message,
+                );
+              }
               return LoadingWidget();
-            } else if (state is LoadedPostDetailState) {
-              return PostDetailWidget(
-                post: state.post,
-              );
-            } else if (state is ErrorState) {
-              return MessageDisplay(
-                message: state.message,
-              );
-            }
-            return LoadingWidget();
-          },
+            },
+          ),
         ),
       ),
     );

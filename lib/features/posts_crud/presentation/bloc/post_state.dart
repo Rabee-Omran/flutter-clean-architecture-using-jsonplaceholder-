@@ -7,18 +7,27 @@ abstract class PostState extends Equatable {
   List<Object> get props => [];
 }
 
-
 class InitialState extends PostState {}
 
 class LoadingState extends PostState {}
 
 class LoadedPostsState extends PostState {
   final List<Post> posts;
+  final bool hasReachedMax;
 
-  LoadedPostsState({required this.posts});
+  LoadedPostsState({
+    required this.posts,
+    required this.hasReachedMax,
+  });
+  LoadedPostsState copyWith({List<Post>? posts, bool? hasReachedMax}) {
+    return LoadedPostsState(
+      posts: posts ?? this.posts,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 
   @override
-  List<Object> get props => [posts];
+  List<Object> get props => [posts, hasReachedMax];
 }
 
 class LoadedPostDetailState extends PostState {

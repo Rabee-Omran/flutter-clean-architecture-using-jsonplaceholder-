@@ -9,6 +9,8 @@ abstract class PostEvent extends Equatable {
 
 class GetAllPostsEvent extends PostEvent {}
 
+class PostsRefreshEvent extends PostEvent {}
+
 class GetPostDetailEvent extends PostEvent {
   final int postId;
 
