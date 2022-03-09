@@ -1,8 +1,10 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import '../models/post_model.dart';
+
 import '../../../../core/error/exception.dart';
 import '../../domain/entities/post.dart';
+import '../models/post_model.dart';
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 

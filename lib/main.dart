@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'features/posts_crud/presentation/bloc/post_bloc.dart';
 import 'features/posts_crud/presentation/pages/posts_page.dart';
+import 'features/posts_crud/presentation/widgets/loading_widget.dart';
+import 'features/theme/presentation/bloc/theme_bloc.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
@@ -14,24 +17,29 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<PostBloc>(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Post CRUD',
-        theme: ThemeData(
-          appBarTheme: AppBarTheme(backgroundColor: Colors.blue.shade800),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Colors.blue.shade800,
-          ),
-          buttonTheme: ButtonThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-          ),
-        ),
-        home: PostsPage(),
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => sl<PostBloc>(),
       ),
+      BlocProvider(create: (_) => sl<ThemeBloc>()..add(InitialThemeEvent())),
+    ], child: _buildWithTheme());
+  }
+
+  Widget _buildWithTheme() {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        if (state is ThemeLoadingState) {
+          return LoadingWidget();
+        } else if (state is ThemeLoadedState) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Post CRUD',
+            theme: state.themeData,
+            home: PostsPage(),
+          );
+        }
+        return LoadingWidget();
+      },
     );
   }
 }

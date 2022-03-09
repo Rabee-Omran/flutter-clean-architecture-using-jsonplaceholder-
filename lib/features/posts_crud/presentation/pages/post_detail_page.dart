@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../injection_container.dart';
-import '../widgets/post_detail_page/post_detail_widget.dart';
 import '../../domain/entities/post.dart';
 import '../bloc/post_bloc.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/message_display.dart';
+import '../widgets/post_detail_page/post_detail_widget.dart';
 
 class PostDetailPage extends StatefulWidget {
   const PostDetailPage({Key? key, required this.post}) : super(key: key);

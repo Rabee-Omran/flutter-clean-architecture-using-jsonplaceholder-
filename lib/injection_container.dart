@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'features/theme/data/repositories/theme_repository_impl.dart';
+import 'features/theme/domain/repositories/theme_repository.dart';
+import 'features/theme/domain/usecases/get_stored_theme.dart';
+import 'features/theme/domain/usecases/store_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
@@ -14,6 +18,8 @@ import 'features/posts_crud/domain/usecases/get_all_posts.dart';
 import 'features/posts_crud/domain/usecases/get_post_detail.dart';
 import 'features/posts_crud/domain/usecases/update_post.dart';
 import 'features/posts_crud/presentation/bloc/post_bloc.dart';
+import 'features/theme/data/datasources/theme_local_data_source.dart';
+import 'features/theme/presentation/bloc/theme_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -30,12 +36,19 @@ Future<void> init() async {
         networkInfo: sl()),
   );
 
+  sl.registerFactory(() => ThemeBloc(
+        storeTheme: sl(),
+        getStoredTheme: sl(),
+      ));
+
   // Use cases
   sl.registerLazySingleton(() => GetAllPosts(sl()));
   sl.registerLazySingleton(() => GetPostDetail(sl()));
   sl.registerLazySingleton(() => AddPost(sl()));
   sl.registerLazySingleton(() => DeletePost(sl()));
   sl.registerLazySingleton(() => UpdatePost(sl()));
+  sl.registerLazySingleton(() => GetStoredTheme(sl()));
+  sl.registerLazySingleton(() => StoreTheme(sl()));
 
   // Repository
   sl.registerLazySingleton<PostsCrudRepository>(
@@ -46,6 +59,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<ThemeRepository>(
+    () => ThemeRepositoryImpl(
+      localDataSource: sl(),
+    ),
+  );
+
   // Data sources
   sl.registerLazySingleton<PostCrudRemoteDataSource>(
     () => PostCrudRemoteDataSourceImpl(client: sl()),
@@ -53,6 +72,10 @@ Future<void> init() async {
 
   sl.registerLazySingleton<PostCrudLocalDataSource>(
     () => PostCrudLocalDataSourceImpl(sharedPreferences: sl()),
+  );
+
+  sl.registerLazySingleton<ThemeLocalDataSource>(
+    () => ThemeLocalDataSourceImpl(sharedPreferences: sl()),
   );
 
   //! Core

@@ -1,6 +1,9 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/strings/failures.dart';
@@ -12,6 +15,7 @@ import '../../domain/usecases/delete_post.dart';
 import '../../domain/usecases/get_all_posts.dart';
 import '../../domain/usecases/get_post_detail.dart';
 import '../../domain/usecases/update_post.dart';
+
 part 'post_event.dart';
 part 'post_state.dart';
 

@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
-import '../models/post_model.dart';
-import '../../domain/entities/post.dart';
+
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
+import '../../domain/entities/post.dart';
 import '../../domain/repositories/posts_crud_repository.dart';
 import '../datasources/post_crud_local_data_source.dart';
 import '../datasources/post_crud_remote_data_source.dart';
+import '../models/post_model.dart';
 
 typedef Future<bool> _DeletedAddedUpdatedChooser();
 

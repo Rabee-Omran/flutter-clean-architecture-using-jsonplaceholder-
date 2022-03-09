@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'add_post_page.dart';
-import '../../domain/entities/post.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../theme/presentation/pages/preference_page.dart';
 import '../bloc/post_bloc.dart';
 import '../widgets/loading_widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/message_display.dart';
 import '../widgets/posts_page/post_list.dart';
+import 'add_post_page.dart';
 
 class PostsPage extends StatefulWidget {
   const PostsPage({Key? key}) : super(key: key);
@@ -23,13 +24,21 @@ class _PostsPageState extends State<PostsPage> {
     _scrollController.addListener(_onScroll);
   }
 
-  List<Post> posts = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Posts'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PreferencePage(),
+              ));
+            },
+          )
+        ],
       ),
       body: buildBody(context),
       floatingActionButton: FloatingActionButton(
@@ -57,7 +66,6 @@ class _PostsPageState extends State<PostsPage> {
             } else if (state is LoadingState) {
               return LoadingWidget();
             } else if (state is LoadedPostsState) {
-              posts = state.posts;
               return RefreshIndicator(
                 onRefresh: _onRefresh,
                 child: PostList(
@@ -69,9 +77,6 @@ class _PostsPageState extends State<PostsPage> {
               return MessageDisplay(
                 message: state.message,
               );
-            } else if (state is LoadedPostDetailState) {
-              print(state);
-              return Text('dfdf');
             }
             return SizedBox();
           },
