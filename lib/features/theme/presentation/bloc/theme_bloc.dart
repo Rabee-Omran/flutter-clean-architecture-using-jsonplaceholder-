@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import '../../domain/usecases/get_stored_theme.dart';
-import '../../domain/usecases/store_theme.dart';
+
 import '../../../../core/app_themes.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../domain/usecases/get_stored_theme.dart';
+import '../../domain/usecases/store_theme.dart';
+
 part 'theme_event.dart';
 part 'theme_state.dart';
 
